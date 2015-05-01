@@ -1,7 +1,6 @@
 package com.julie.studentmanager.domain;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,8 +26,6 @@ public class Semester {
             )
     private List<Discipline> disciplineList;
 
-
-
     public Integer getId() {
         return id;
     }
@@ -45,14 +42,6 @@ public class Semester {
         this.name = name;
     }
 
-    public List<Discipline> getDisciplineList() {
-        return disciplineList;
-    }
-
-    public void setDisciplineList(List<Discipline> disciplineList) {
-        this.disciplineList = disciplineList;
-    }
-
     public Integer getDuration() {
         return duration;
     }
@@ -61,4 +50,11 @@ public class Semester {
         this.duration = duration;
     }
 
+    public List<Discipline> getDisciplineList() {
+        return disciplineList;
+    }
+
+    public void setDisciplineList(List<Discipline> disciplineList) {
+        this.disciplineList = disciplineList;
+    }
 }

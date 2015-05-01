@@ -12,7 +12,7 @@ USE studentmanager;
     entrance_date DATE,
     created timestamp default NOW()
 );*/
-
+/*
 CREATE TABLE disciplines
 (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -32,4 +32,13 @@ CREATE TABLE semester_discipline
     id INT AUTO_INCREMENT PRIMARY KEY,
     semester_id INT,
     discipline_id INT
+);*/
+
+CREATE TABLE progress
+(
+    id INT AUTO_INCREMENT PRIMARY KEY ,
+    value INT,
+    student_id INT,
+    discipline_id INT,
+    semester_id INT
 );

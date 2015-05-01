@@ -7,5 +7,6 @@
         <mapping class="com.julie.studentmanager.domain.Discipline"/>
         <mapping class="com.julie.studentmanager.domain.Progress"/>
         <mapping class="com.julie.studentmanager.domain.Semester"/>
+        <mapping class="com.julie.studentmanager.domain.SemesterDiscipline"/>
     </session-factory>
 </hibernate-configuration>

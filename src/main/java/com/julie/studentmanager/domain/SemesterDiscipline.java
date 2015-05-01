@@ -3,24 +3,21 @@ package com.julie.studentmanager.domain;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "progress")
-public class Progress {
+@Table(name = "semester_discipline")
+public class SemesterDiscipline {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue
     private Integer id;
 
-    @Column(name = "value")
-    private int value;
-
     @ManyToOne
-    private Student student;
-
-    @ManyToOne
-    private Discipline discipline;
-
-    @ManyToOne
+    @JoinColumn(name = "semester_id",referencedColumnName = "id")
     private Semester semester;
+
+    @ManyToOne
+    @JoinColumn(name = "discipline_id",referencedColumnName = "id")
+    private Discipline discipline;
 
     public Integer getId() {
         return id;
@@ -28,22 +25,6 @@ public class Progress {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
-    }
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
     }
 
     public Discipline getDiscipline() {

@@ -27,4 +27,5 @@ public class StudentController {
         model.addAttribute("students", studentList);
         return "index";
     }
+
 }

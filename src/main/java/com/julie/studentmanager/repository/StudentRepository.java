@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class StudentRepository {
+public class StudentRepository{
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -20,13 +20,12 @@ public class StudentRepository {
     }
 
     public List<Student> studentList(){
-        return this.sessionFactory.getCurrentSession().createQuery("from Student")
-                .list();
+        return this.sessionFactory.getCurrentSession().createQuery("from Student ").list();
     }
 
     public Student studentById(Integer id){
-        Student student = (Student) this.sessionFactory.getCurrentSession().load(Student.class, id);
-        return student;
+        return (Student) this.sessionFactory.getCurrentSession().get(Student.class, id);
+
     }
 
     public void modifyStudent(Student student, Integer id){
@@ -40,7 +39,7 @@ public class StudentRepository {
     }
 
     public void removeStudent(Integer id){
-        Student student = (Student) this.sessionFactory.getCurrentSession().load(Student.class,id);
+        Student student = studentById(id);
 
         if(null != student){
             this.sessionFactory.getCurrentSession().delete(student);

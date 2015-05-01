@@ -7,6 +7,15 @@ import java.util.Date;
 @Table(name="students")
 public class Student {
 
+    public Student(){}
+
+    public Student(String firstName, String secondName, String group, Date entranceDate) {
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.group = group;
+        this.entranceDate = entranceDate;
+    }
+
     @Id
     @Column(name = "id")
     @GeneratedValue
