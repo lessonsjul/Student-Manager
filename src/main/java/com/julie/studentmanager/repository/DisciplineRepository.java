@@ -25,7 +25,7 @@ public class DisciplineRepository {
     }
 
     public Discipline disciplineById(Integer id){
-        return (Discipline) this.sessionFactory.getCurrentSession().load(Discipline.class, id);
+        return (Discipline) this.sessionFactory.getCurrentSession().get(Discipline.class,id);
     }
 
     public void modifyDiscipline(Discipline discipline, Integer id){

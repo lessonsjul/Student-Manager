@@ -8,10 +8,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class FormController {
 
-    @RequestMapping(value = "/action", method = RequestMethod.GET)
-    public String formAction( @RequestParam("buttonName") String param, @RequestParam("idStud") Integer id){
 
-        return "redirect:"+param+"/"+id;
+    @RequestMapping(value = "/actionAdd", method = RequestMethod.GET)
+    public String formAction(@RequestParam("buttonName") String param){
+        return "redirect:"+ param;
+    }
 
+    @RequestMapping(value = "/action",method = RequestMethod.GET)
+    public String formAction(@RequestParam("buttonName") String param,@RequestParam("idStud") Integer id){
+        return "redirect:"+ param+"/"+id;
     }
 }

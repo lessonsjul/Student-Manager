@@ -33,11 +33,13 @@ public class ProgressController {
         Student student = progressList.get(0).getStudent();
         Semester semester = this.semesterRepository.semesterById(idSem);
         List<Semester> semesterList = this.semesterRepository.semesterList();
+
         double sum = 0;
         for(Progress elem: progressList){
             sum += elem.getValue();
         }
         double avarage = sum / progressList.size();
+
         model.addAttribute("progresses", progressList);
         model.addAttribute("student", student);
         model.addAttribute("semester", semester);

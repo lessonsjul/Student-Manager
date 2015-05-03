@@ -5,6 +5,7 @@
 
 
 <t:template>
+  <h4>Отображена успеваемость для следующего студента:</h4>
   <table>
     <tr>
       <th>Фамилия</th>
@@ -19,10 +20,11 @@
       <td>${student.entranceDate}</td>
     </tr>
   </table>
+  <div class="discipline">
  <c:if test="${!empty progresses}">
   <table>
     <tr>
-      <th>Предметы</th>
+      <th>Дисциплина</th>
       <th>Оценка</th>
     </tr>
     <c:forEach items="${progresses}" var="elem">
@@ -33,7 +35,10 @@
     </c:forEach>
   </table>
 </c:if>
-  <select onchange="document.location=this.options[this.selectedIndex].value">
+  </div>
+  <div class="choises">
+    <label>Выбрать семестр</label>
+    <select onchange="document.location=this.options[this.selectedIndex].value">
   <c:forEach items="${semesters}" var="sem">
     <c:if test="${semester.id==sem.id}">
       <option value="${sem.id}" selected>${sem.name}</option>
@@ -43,6 +48,7 @@
     </c:if>
   </c:forEach>
     </select>
-<div>Средняя оценка за семестр: ${avaragePoint}</div>
+  <h5>Средняя оценка за семестр: ${avaragePoint} балла</h5>
+  </div>
 
 </t:template>

@@ -1,7 +1,7 @@
 package com.julie.studentmanager.domain;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.text.SimpleDateFormat;
 
 @Entity
 @Table(name="students")
@@ -9,12 +9,6 @@ public class Student {
 
     public Student(){}
 
-    public Student(String firstName, String secondName, String group, Date entranceDate) {
-        this.firstName = firstName;
-        this.secondName = secondName;
-        this.group = group;
-        this.entranceDate = entranceDate;
-    }
 
     @Id
     @Column(name = "id")
@@ -31,7 +25,7 @@ public class Student {
     private String group;
 
     @Column(name = "entrance_date")
-    private Date entranceDate;
+    private String entranceDate;
 
     public Integer getId() {
         return id;
@@ -65,11 +59,11 @@ public class Student {
         this.group = group;
     }
 
-    public Date getEntranceDate() {
+    public String getEntranceDate() {
         return entranceDate;
     }
 
-    public void setEntranceDate(Date entranceDate) {
-        this.entranceDate = entranceDate;
+    public void setEntranceDate(String entranceDate) {
+        this.entranceDate = new SimpleDateFormat("dd/M/yyyy").format(entranceDate);
     }
 }

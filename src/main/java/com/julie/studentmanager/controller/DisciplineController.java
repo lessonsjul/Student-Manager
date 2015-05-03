@@ -20,11 +20,13 @@ public class DisciplineController {
         this.disciplineRepository = disciplineRepository;
     }
 
-    @RequestMapping(value = "/getDisciplines", method = RequestMethod.GET)
+    @RequestMapping(value = "/disciplines", method = RequestMethod.GET)
     public String getDisciplines(Model model){
         List<Discipline> disciplineList = this.disciplineRepository.disciplineList();
 
         model.addAttribute("disciplines", disciplineList);
         return "discipline";
     }
+
+
 }

@@ -5,9 +5,4 @@
 
 
 <t:template>
-  <div class="index">
-  <a href="/students"><h2>Студенты</h2></a>
-  <a href="/disciplines"><h2>Дисциплины</h2></a>
-  <a href="/semesters"><h2>Семестры</h2></a>
-  </div>
-</t:template>
+  </t:template>
