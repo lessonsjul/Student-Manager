@@ -5,6 +5,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "disciplines")
 public class Discipline {
+    public Discipline() {
+    }
+
+    public Discipline(String name) {
+        this.name = name;
+    }
+
     @Id
     @Column(name = "id")
     @GeneratedValue
@@ -12,6 +19,8 @@ public class Discipline {
 
     @Column(name = "name")
     private String name;
+
+
 
     public Integer getId() {
         return id;

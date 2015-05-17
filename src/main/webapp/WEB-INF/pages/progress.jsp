@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; UTF-8" pageEncoding="UTF-8" language="java" %>
+<%@ page contentType="text/html; UTF-8"  pageEncoding="UTF-8" language="java" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -21,33 +21,39 @@
     </tr>
   </table>
   <div class="discipline">
- <c:if test="${!empty progresses}">
+ <c:if test="${!empty disValues}">
   <table>
     <tr>
       <th>Дисциплина</th>
       <th>Оценка</th>
     </tr>
-    <c:forEach items="${progresses}" var="elem">
+    <c:forEach items="${disValues}" var="elem">
       <tr>
-        <td>${elem.discipline.name}</td>
+        <td>${elem.key}</td>
         <td>${elem.value}</td>
+
       </tr>
     </c:forEach>
   </table>
 </c:if>
   </div>
   <div class="choises">
+    <form:form name="semesterForm" action="progress" method="get">
+      <input type="hidden" name="idStud" value="${student.id}">
     <label>Выбрать семестр</label>
-    <select onchange="document.location=this.options[this.selectedIndex].value">
-  <c:forEach items="${semesters}" var="sem">
-    <c:if test="${semester.id==sem.id}">
-      <option value="${sem.id}" selected>${sem.name}</option>
-    </c:if>
-    <c:if test="${semester.id!=sem.id}" >
-      <option value="/progress/${sem.id}/${student.id}">${sem.name}</option>
-    </c:if>
-  </c:forEach>
+
+    <select name="idSem">
+    <c:forEach items="${semesters}" var="sem">
+      <c:if test="${sem.id != choiseSem}">
+      <option onselect="changeSemestr(${sem.id})" value="${sem.id}">${sem.name}</option>
+      </c:if>
+      <c:if test="${sem.id == choiseSem}">
+        <option  value="${sem.id}" selected>${sem.name}</option>
+      </c:if>
+    </c:forEach>
     </select>
+      <input class="button choise-button" type="submit" value="Выбрать">
+    </form:form>
   <h5>Средняя оценка за семестр: ${avaragePoint} балла</h5>
   </div>
 

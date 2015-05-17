@@ -14,13 +14,25 @@ public class Progress {
     private int value;
 
     @ManyToOne
-    private Student student;
-
-    @ManyToOne
     private Discipline discipline;
 
     @ManyToOne
+    private Student student;
+
+    @ManyToOne
     private Semester semester;
+
+    public Progress() {
+    }
+
+    public Progress(Integer id, int value, Discipline discipline, Student student, Semester semester) {
+        this.id = id;
+        this.value = value;
+        this.discipline = discipline;
+        this.student = student;
+        this.semester = semester;
+    }
+
 
     public Integer getId() {
         return id;
@@ -28,14 +40,6 @@ public class Progress {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
     }
 
     public Student getStudent() {
@@ -46,19 +50,27 @@ public class Progress {
         this.student = student;
     }
 
-    public Discipline getDiscipline() {
-        return discipline;
-    }
-
-    public void setDiscipline(Discipline discipline) {
-        this.discipline = discipline;
-    }
-
     public Semester getSemester() {
         return semester;
     }
 
     public void setSemester(Semester semester) {
         this.semester = semester;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public Discipline getDiscipline() {
+        return discipline;
+    }
+
+    public void setDiscipline(Discipline discipline) {
+        this.discipline = discipline;
     }
 }

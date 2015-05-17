@@ -25,11 +25,11 @@ public class StudentRepository{
 
     public Student studentById(Integer id){
         return (Student) this.sessionFactory.getCurrentSession().get(Student.class, id);
-
     }
 
-    public void modifyStudent(Student student, Integer id){
-        Student studentToUpdate = studentById(id);
+    public void editStudent(Student student){
+        Student studentToUpdate = studentById(student.getId());
+
         studentToUpdate.setFirstName(student.getFirstName());
         studentToUpdate.setSecondName(student.getSecondName());
         studentToUpdate.setGroup(student.getGroup());
@@ -45,4 +45,5 @@ public class StudentRepository{
             this.sessionFactory.getCurrentSession().delete(student);
         }
     }
+
 }

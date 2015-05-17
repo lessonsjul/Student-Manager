@@ -1,3 +1,4 @@
+@charset "UTF-8";
 body{
     background: #dfdfdf;
     font-family:Comic Sans MS, sans-serif;
@@ -25,8 +26,11 @@ main{
     text-align: center;
 }
 
+.studForm{
+    width: 800px;
+}
+
 table {
-    width: auto;
     border-collapse: collapse;
     margin-bottom: 20px;
     width: 100%;
@@ -41,22 +45,28 @@ table th, table td{
 }
 
 table th{
-    background: gray;
+    background: #a6a6a6;
 }
 
 .discipline,.choises {
-    display: block;
-    width: 350px;
+    width: 380px;
+    padding: 5px;
+}
+.discipline{
     float: left;
-    margin-right: 30px;
+}
+.choises{
+    float: right;
+    text-align: center;
 }
 
-.studForm .button{
-    width: 350px;
-    margin-right: 5px;
-    margin-bottom: 5px;
-    margin-top: 5px;
-    text-align: center;
+label + select{
+    display: inline-block;
+}
+
+.choise-button{
+    width: 75px;
+    display: inline-block;
 }
 
 .add{
@@ -65,22 +75,52 @@ table th{
     display: block;
 }
 
-.add label, .add label + input{
-    margin: 10px;
+.add label{
+    margin-right: 10px;
+}
+
+.add label + input{
+    margin-bottom: 10px;
 }
 
 .add label + input{
     width: 200px;
 }
 
-.add .button{
-    width: 150px;
-    margin: 10px;
-    margin-top: 15px;
-    position: relative;
-    right: 50px;
-
+.add .semLab{
+    font-size: 12px;
 }
+
+.add select{
+    width: 200px;
+    margin-bottom: 5px;
+}
+
+.add option{
+    margin-left: 5px;
+}
+
+.button{
+    text-align: center;
+    margin: 5px;
+    padding: 2px;
+}
+
+.multi-button{
+    width: 350px;
+}
+
+.submit-button{
+    width: 150px;
+    position: relative;
+    right: 45px;
+}
+
+
+
+
+
+
 
 
 

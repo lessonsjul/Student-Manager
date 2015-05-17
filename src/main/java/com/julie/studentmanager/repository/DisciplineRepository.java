@@ -20,7 +20,7 @@ public class DisciplineRepository {
     }
 
     public List<Discipline> disciplineList(){
-        return this.sessionFactory.getCurrentSession().createQuery("from Discipline")
+        return this.sessionFactory.getCurrentSession().createQuery("from Discipline ")
                 .list();
     }
 
@@ -28,9 +28,10 @@ public class DisciplineRepository {
         return (Discipline) this.sessionFactory.getCurrentSession().get(Discipline.class,id);
     }
 
-    public void modifyDiscipline(Discipline discipline, Integer id){
-        Discipline disciplineToUpdate = disciplineById(id);
+    public void editDiscipline(Discipline discipline){
+        Discipline disciplineToUpdate = disciplineById(discipline.getId());
         disciplineToUpdate.setName(discipline.getName());
+
         this.sessionFactory.getCurrentSession().update(disciplineToUpdate);
     }
 

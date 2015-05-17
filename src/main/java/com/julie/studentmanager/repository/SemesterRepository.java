@@ -24,15 +24,17 @@ public class SemesterRepository {
                 .list();
     }
 
-    public Semester semesterById(Integer idSem){
-        return (Semester)this.sessionFactory.getCurrentSession().get(Semester.class,idSem);
+    public Semester semesterById(Integer id){
+        return (Semester)this.sessionFactory.getCurrentSession().get(Semester.class,id);
     }
 
-    public void modifySemester(Semester semester, Integer id){
-        Semester semesterToUpdate = semesterById(id);
+    public void editSemester(Semester semester){
+        Semester semesterToUpdate = semesterById(semester.getId());
+
         semesterToUpdate.setName(semester.getName());
         semesterToUpdate.setDuration(semester.getDuration());
         semesterToUpdate.setDisciplineList(semester.getDisciplineList());
+
         this.sessionFactory.getCurrentSession().update(semesterToUpdate);
     }
 

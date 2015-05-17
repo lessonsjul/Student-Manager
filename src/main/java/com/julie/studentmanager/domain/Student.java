@@ -1,7 +1,9 @@
 package com.julie.studentmanager.domain;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Entity
 @Table(name="students")
@@ -9,6 +11,12 @@ public class Student {
 
     public Student(){}
 
+    public Student(String firstName, String secondName, String group, Date entranceDate) {
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.group = group;
+        this.entranceDate = entranceDate;
+    }
 
     @Id
     @Column(name = "id")
@@ -25,7 +33,8 @@ public class Student {
     private String group;
 
     @Column(name = "entrance_date")
-    private String entranceDate;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private Date entranceDate;
 
     public Integer getId() {
         return id;
@@ -59,11 +68,11 @@ public class Student {
         this.group = group;
     }
 
-    public String getEntranceDate() {
+    public Date getEntranceDate() {
         return entranceDate;
     }
 
-    public void setEntranceDate(String entranceDate) {
-        this.entranceDate = new SimpleDateFormat("dd/M/yyyy").format(entranceDate);
+    public void setEntranceDate(Date entranceDate) {
+        this.entranceDate = entranceDate;
     }
 }

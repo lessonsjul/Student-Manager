@@ -1,11 +1,20 @@
 package com.julie.studentmanager.domain;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "semesters")
 public class Semester {
+    public Semester() {
+    }
+
+    public Semester(String name, Integer duration, Set<Discipline> disciplineList) {
+        this.name = name;
+        this.duration = duration;
+        this.disciplineList = disciplineList;
+    }
+
     @Id
     @Column(name = "id")
     @GeneratedValue
@@ -18,13 +27,7 @@ public class Semester {
     private Integer duration;
 
     @OneToMany
-    @JoinTable
-            (
-                    name = "semester_discipline",
-                    joinColumns = {@JoinColumn(name = "semester_id", referencedColumnName = "id")},
-                    inverseJoinColumns = {@JoinColumn(name = "discipline_id", referencedColumnName = "id")}
-            )
-    private List<Discipline> disciplineList;
+    private Set<Discipline> disciplineList;
 
     public Integer getId() {
         return id;
@@ -50,11 +53,11 @@ public class Semester {
         this.duration = duration;
     }
 
-    public List<Discipline> getDisciplineList() {
+    public Set<Discipline> getDisciplineList() {
         return disciplineList;
     }
 
-    public void setDisciplineList(List<Discipline> disciplineList) {
+    public void setDisciplineList(Set<Discipline> disciplineList) {
         this.disciplineList = disciplineList;
     }
 }

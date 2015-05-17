@@ -4,8 +4,8 @@
 <html>
 <head>
     <title>Student Progress Manager</title>
-    <script src="<c:url value="/resources/s/StudentUtilities.js"/>"></script>
-    <script src="<c:url value="/resources/s/DisciplineUtilities.js"/>"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script src="<c:url value="/resources/s/Actions.js"/>"></script>
     <link href="<c:url value="/resources/c/style.css"/>" rel="stylesheet">
 </head>
 <body>
