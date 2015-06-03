@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Controller
 public class DisciplineController {
@@ -24,7 +25,7 @@ public class DisciplineController {
 
     @RequestMapping(value = "/disciplines", method = RequestMethod.GET)
     public String getDisciplines(Model model){
-        List<Discipline> disciplineList = this.disciplineRepository.disciplineList();
+        Set<Discipline> disciplineList = new HashSet<Discipline>(this.disciplineRepository.disciplineList());
 
         model.addAttribute("disciplines", disciplineList);
         return "discipline";
@@ -64,5 +65,6 @@ public class DisciplineController {
         this.disciplineRepository.removeDiscipline(id);
         return "redirect:disciplines";
     }
+
 
 }

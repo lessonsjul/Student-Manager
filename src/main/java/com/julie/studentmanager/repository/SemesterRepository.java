@@ -1,11 +1,16 @@
 package com.julie.studentmanager.repository;
 
+import com.julie.studentmanager.domain.Discipline;
 import com.julie.studentmanager.domain.Semester;
+import org.hibernate.Hibernate;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -15,37 +20,68 @@ public class SemesterRepository {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public void addSemester(Semester semester){
-        this.sessionFactory.getCurrentSession().save(semester);
+    public void addSemester(Semester semester,List<Discipline> disciplineList){
+        List<Discipline> allDisciplines = new ArrayList<Discipline>();
+        for (Discipline elem: disciplineList){
+            Integer idDisc = Integer.parseInt(elem.getName());
+            Discipline d = (Discipline)this.sessionFactory.getCurrentSession().createCriteria(Discipline.class)
+                    .add(Restrictions.idEq(idDisc)).addOrder(Order.asc("semester")).uniqueResult();
+            allDisciplines.add(d);
+        }
+
+        semester.setDisciplineList(allDisciplines);
+        this.sessionFactory.getCurrentSession().saveOrUpdate(semester);
+    }
+
+    public void editSemester(Semester semester, Integer id, List<Discipline> disciplineList){
+        List<Discipline> allDisciplines = new ArrayList<Discipline>();
+        for (Discipline elem: disciplineList){
+            Integer idDisc = Integer.parseInt(elem.getName());
+            Discipline d = (Discipline)this.sessionFactory.getCurrentSession().createCriteria(Discipline.class)
+                    .add(Restrictions.idEq(idDisc)).addOrder(Order.asc("semester")).uniqueResult();
+            allDisciplines.add(d);
+        }
+
+        Semester semesterToUpdate = getSemesterByIdWithDiscipl(id);
+        semesterToUpdate.setName(semester.getName());
+        semesterToUpdate.setDuration(semester.getDuration());
+        semesterToUpdate.setDisciplineList(allDisciplines);
+        this.sessionFactory.getCurrentSession().saveOrUpdate(semesterToUpdate);
     }
 
     public List<Semester> semesterList(){
-        return this.sessionFactory.getCurrentSession().createQuery("from Semester ")
-                .list();
+        return this.sessionFactory.getCurrentSession().createQuery("from Semester s").list();
     }
 
-    public Semester semesterById(Integer id){
-        return (Semester)this.sessionFactory.getCurrentSession().get(Semester.class,id);
+    public Semester getSemesterById(Integer idSem){
+        return (Semester)this.sessionFactory.getCurrentSession().createCriteria(Semester.class)
+                .add(Restrictions.idEq(idSem)).uniqueResult();
+
     }
 
-    public void editSemester(Semester semester){
-        Semester semesterToUpdate = semesterById(semester.getId());
+    public Semester getSemesterByIdWithDiscipl(Integer idSem){
+        Semester semester = (Semester)this.sessionFactory.getCurrentSession().createCriteria(Semester.class)
+                .add(Restrictions.idEq(idSem)).uniqueResult();
+        Hibernate.initialize(semester.getDisciplineList());
+        return semester;
+    }
 
-        semesterToUpdate.setName(semester.getName());
-        semesterToUpdate.setDuration(semester.getDuration());
-        semesterToUpdate.setDisciplineList(semester.getDisciplineList());
+    public List<Discipline> getDisciplineList(){
+        return this.sessionFactory.getCurrentSession().createCriteria(Discipline.class).list();
+    }
 
-        this.sessionFactory.getCurrentSession().update(semesterToUpdate);
+    public List<Discipline> getDisciplineListBySemId(Integer semId){
+        return this.sessionFactory.getCurrentSession()
+                .createQuery("from Discipline d where d.semester.id=" + semId).list();
     }
 
     public void removeSemester(Integer id){
-        Semester semester = semesterById(id);
+        Semester semester = (Semester)this.sessionFactory.getCurrentSession().get(Semester.class,id);
 
         if(null != semester){
             this.sessionFactory.getCurrentSession().delete(semester);
         }
     }
-
 
 
 }

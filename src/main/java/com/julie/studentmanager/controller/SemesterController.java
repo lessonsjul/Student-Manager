@@ -2,7 +2,6 @@ package com.julie.studentmanager.controller;
 
 import com.julie.studentmanager.domain.Discipline;
 import com.julie.studentmanager.domain.Semester;
-import com.julie.studentmanager.repository.DisciplineRepository;
 import com.julie.studentmanager.repository.SemesterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,35 +19,36 @@ import java.util.Set;
 public class SemesterController {
     
     private SemesterRepository semesterRepository;
-    private DisciplineRepository disciplineRepository;
 
 
     @Autowired
-    public SemesterController(SemesterRepository semesterRepository, DisciplineRepository disciplineRepository) {
+    public SemesterController(SemesterRepository semesterRepository) {
         this.semesterRepository = semesterRepository;
-        this.disciplineRepository = disciplineRepository;
     }
 
     @RequestMapping(value = "/semesters", method = RequestMethod.GET)
-    public String  semesterList(@RequestParam("idSem") Integer idSem, Model model) {
-
+    public String  semesterList(@RequestParam(value = "idSem", required = false) Integer idSem, Model model) {
         List<Semester> semesterList = this.semesterRepository.semesterList();
+        Semester semester = null;
+        if(null !=idSem) {
+           semester = this.semesterRepository.getSemesterByIdWithDiscipl(idSem);
+        }else {
+            semester = this.semesterRepository.getSemesterByIdWithDiscipl(semesterList.get(0).getId());
+        }
 
         model.addAttribute("semesters",semesterList);
+        model.addAttribute("semester",semester);
         model.addAttribute("choiseSem",idSem);
+        model.addAttribute("addButton", "Создать семестр...");
+        model.addAttribute("modifButton", "Модифицировать выбранный семестр...");
+        model.addAttribute("deleteButton", "Удалить выбранный семестр");
 
         return "semester";
     }
 
-    @RequestMapping(value = "/semesters", method = RequestMethod.POST)
-    public String  semesterList(@ModelAttribute("idSem")Integer id) {
-        return "redirect: semesters?idSem="+id;
-    }
-
     @RequestMapping(value = "/addSemester", method = RequestMethod.GET)
-    public String addSemester(@RequestParam("idSem")Integer id,Model model){
-
-        List<Discipline> disciplineList = this.disciplineRepository.disciplineList();
+    public String addSemester(Model model){
+        Set<Discipline> disciplineList = new HashSet<Discipline>(this.semesterRepository.getDisciplineList());
 
         model.addAttribute("semester", new Semester());
         model.addAttribute("disciplines", disciplineList);
@@ -59,20 +59,17 @@ public class SemesterController {
 
     @RequestMapping(value = "/editSemester", method = RequestMethod.GET)
     public String editSemester(@RequestParam("idSem")Integer id, Model model){
-        Semester semester = this.semesterRepository.semesterById(id);
-        List<Discipline> disciplineList = this.disciplineRepository.disciplineList();
+        Semester semester = this.semesterRepository.getSemesterById(id);
+        List<Discipline> disciplineListBySemId = this.semesterRepository.getDisciplineListBySemId(id);
+        Set<String> selected = new HashSet<String>();
 
-        Set<Discipline> choiseDiscipl = new HashSet<Discipline>();
-
-        for(Discipline elem: disciplineList){
-            if(semester.getDisciplineList().contains(elem)){
-                choiseDiscipl.add(elem);
-                disciplineList.remove(elem);
-            }
+        for(Discipline elem: disciplineListBySemId){
+            selected.add(elem.getName());
         }
+        Set<Discipline> disciplineList = new HashSet<Discipline>(this.semesterRepository.getDisciplineList());
 
         model.addAttribute("semester", semester);
-        model.addAttribute("choiseDiscipl", choiseDiscipl);
+        model.addAttribute("selected", selected);
         model.addAttribute("disciplines", disciplineList);
         model.addAttribute("nameButton", "Применить");
         model.addAttribute("infoText", "Для модификации семестра отредактируйте данные и нажмите кнопку");
@@ -80,12 +77,23 @@ public class SemesterController {
     }
 
     @RequestMapping(value = "/addModifySemester", method = RequestMethod.POST)
-    public String addSemester(@ModelAttribute("semester") Semester semester){
+    public String addSemester(@ModelAttribute("semester") Semester semester,
+                              @RequestParam("id") Integer idSem,
+                              @RequestParam("disciplineList")List<Discipline> disciplines){
         if(semester.getId() == null) {
-            this.semesterRepository.addSemester(semester);
+            this.semesterRepository.addSemester(semester,disciplines);
         }else{
-            this.semesterRepository.editSemester(semester);
+            this.semesterRepository.editSemester(semester,idSem,disciplines);
         }
-        return "redirect: semesters";
+
+        return "redirect:semesters";
+    }
+
+    @RequestMapping(value = "/deleteSemester", method = RequestMethod.GET)
+    public String deleteStudent(@RequestParam("idSem") Integer idSem){
+
+        if (null != idSem) this.semesterRepository.removeSemester(idSem);
+
+        return "redirect:semesters";
     }
 }

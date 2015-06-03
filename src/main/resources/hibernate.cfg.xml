@@ -4,8 +4,8 @@
 <hibernate-configuration>
     <session-factory>
         <mapping class="com.julie.studentmanager.domain.Student"/>
-        <mapping class="com.julie.studentmanager.domain.Discipline"/>
         <mapping class="com.julie.studentmanager.domain.Progress"/>
         <mapping class="com.julie.studentmanager.domain.Semester"/>
+        <mapping class="com.julie.studentmanager.domain.Discipline"/>
     </session-factory>
 </hibernate-configuration>

@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity
 @Table(name="students")
-public class Student {
+public class Student{
 
     public Student(){}
 

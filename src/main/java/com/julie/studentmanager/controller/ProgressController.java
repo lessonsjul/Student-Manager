@@ -1,17 +1,20 @@
 package com.julie.studentmanager.controller;
 
-import com.julie.studentmanager.domain.Progress;
+import com.julie.studentmanager.domain.Discipline;
 import com.julie.studentmanager.domain.Semester;
 import com.julie.studentmanager.domain.Student;
 import com.julie.studentmanager.repository.ProgressRepository;
 import com.julie.studentmanager.repository.SemesterRepository;
-import com.julie.studentmanager.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -20,39 +23,43 @@ public class ProgressController {
 
     private ProgressRepository progressRepository;
     private SemesterRepository semesterRepository;
-    private StudentRepository studentRepository;
 
     @Autowired
     public ProgressController(ProgressRepository progressRepository,
-                              StudentRepository studentRepository,
                               SemesterRepository semesterRepository) {
         this.progressRepository = progressRepository;
-        this.studentRepository = studentRepository;
         this.semesterRepository = semesterRepository;
     }
 
     @RequestMapping(value = "/progress", method = RequestMethod.GET)
     public String  progressList(@RequestParam("idSem") Integer idSem, @RequestParam("idStud")Integer idStud, Model model) {
 
-        List<Progress> progressList = this.progressRepository.progressList(idStud, idSem);
-        Map<String, Integer> values = new HashMap<String, Integer>();
-        double sum = 0;
-        for(Progress elem: progressList){
-            String discipline = elem.getDiscipline().getName();
-            int value = elem.getValue();
-            values.put(discipline,value);
-            sum += value;
-        }
-        double avarage = sum / progressList.size();
+        List<Object> result = this.progressRepository.progressListByStudIdAndSemId(idStud,idSem);
+        Iterator itr = result.iterator();
 
-        Student student = this.studentRepository.studentById(idStud);
+        Map<Discipline, Integer> values = new HashMap<Discipline, Integer>();
+        Student student = null;
+
+        while(itr.hasNext()){
+            Object[] obj = (Object[]) itr.next();
+            Discipline discipline = (Discipline) obj[2];
+            int value = Integer.parseInt(String.valueOf(obj[0]));
+            values.put(discipline,value);
+            Student st = (Student) obj[1];
+            if(student == null){
+                student = st;
+            }
+        }
+
         List<Semester> semesterList = this.semesterRepository.semesterList();
 
-        model.addAttribute("disValues", values);
+        double avarage = this.progressRepository.avarageValue(idStud, idSem);
+
         model.addAttribute("student", student);
-        model.addAttribute("semesters",semesterList);
+        model.addAttribute("semesters", semesterList);
         model.addAttribute("choiseSem",idSem);
         model.addAttribute("avaragePoint", avarage);
+        model.addAttribute("progress", values);
         return "progress";
     }
 

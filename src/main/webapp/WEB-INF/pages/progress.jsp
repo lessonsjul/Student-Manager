@@ -21,16 +21,16 @@
     </tr>
   </table>
   <div class="discipline">
- <c:if test="${!empty disValues}">
+ <c:if test="${!empty progress}">
   <table>
     <tr>
       <th>Дисциплина</th>
       <th>Оценка</th>
     </tr>
-    <c:forEach items="${disValues}" var="elem">
+    <c:forEach items="${progress}" var="prog">
       <tr>
-        <td>${elem.key}</td>
-        <td>${elem.value}</td>
+        <td>${prog.key.name}</td>
+        <td>${prog.value}</td>
 
       </tr>
     </c:forEach>

@@ -14,12 +14,16 @@
         <th></th>
         <th>Наименование дисциплины</th>
       </tr>
+      <c:if test="${!empty disciplines}" >
       <c:forEach items="${disciplines}" var="discipl">
         <tr>
           <td><input type="checkbox" value="${discipl.id}" name="idDiscipl"></td>
           <td>${discipl.name}</td>
+          <%--<td>${discipl}</td>--%>
         </tr>
       </c:forEach>
+      </c:if>
+
     </table>
   </c:if>
   </div>

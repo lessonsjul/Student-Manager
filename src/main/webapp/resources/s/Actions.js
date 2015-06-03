@@ -40,18 +40,23 @@
         document.semesterForm.idSem.value = id;
     }
 
+    function choiseSemestr(){
+        document.semesterForm.action = "semesters";
+        semesterForm.submit();
+    }
+
     function addSemester()
     {
-        document.semesterButton.action = "addSemester";
+        document.semesterForm.action = "addSemester";
         semesterForm.submit()
     }
 
     function editSemester(){
-        document.semesterButton.action = "editSemester";
+        document.semesterForm.action = "editSemester";
         semesterForm.submit();
     }
 
     function deleteSemester(){
-        document.semesterButton.action = "deleteSemester";
+        document.semesterForm.action = "deleteSemester";
         semesterForm.submit();
     }

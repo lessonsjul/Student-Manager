@@ -44,6 +44,6 @@ CREATE TABLE progress
     discipline_id INT,
     FOREIGN KEY (student_id) REFERENCES students(id)
 	ON DELETE CASCADE,
-    FOREIGN KEY (discipline_id) REFERENCES discipl_semester(discipline_id)
+    FOREIGN KEY (discipline_id) REFERENCES semesters_disciplines(discipline_id)
 	ON DELETE CASCADE
 );
