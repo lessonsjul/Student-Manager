@@ -10,7 +10,8 @@
 </head>
 <body>
 <header><h3>Система управления студентами и их успеваемостью</h3> </header>
-<main><jsp:doBody/></main>
-
+<main>
+    <jsp:doBody/>
+</main>
 </body>
 </html>

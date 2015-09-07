@@ -17,8 +17,10 @@ public class ProgressRepository {
     private SessionFactory sessionFactory;
 
     public List<Object> progressListByStudIdAndSemId(Integer stuId, Integer semId) {
+//        String sql = "select p.value, p.student, p.discipline from Progress p join p.student s join p.discipline d " +
+//                "where s.id=?";
         String sql = "select p.value, p.student, p.discipline from Progress p join p.student s join p.discipline d " +
-                "where s.id=? and d.semester.id = ?";
+                "where s.id=? and d.semester.id=?";
         Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
         query.setInteger(0, stuId);
         query.setInteger(1, semId);
@@ -33,15 +35,7 @@ public class ProgressRepository {
                         " where p.discipline.semester.id=" + semId + " and p.student.id=" + stuId).uniqueResult();
 
         return Double.parseDouble(String.valueOf(s));
-
-    }
-
-
-
-
-
-
-
+        }
 
 
 }

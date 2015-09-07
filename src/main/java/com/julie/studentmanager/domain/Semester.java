@@ -11,19 +11,6 @@ public class Semester{
     public Semester() {
     }
 
-    public Semester(Integer duration, String name, List<Discipline> disciplineList) {
-        this.duration = duration;
-        this.name = name;
-        this.disciplineList = disciplineList;
-    }
-
-    public Semester(Integer id, Integer duration, String name, List<Discipline> disciplineList) {
-        this.id = id;
-        this.duration = duration;
-        this.name = name;
-        this.disciplineList = disciplineList;
-    }
-
     @Id
     @Column(name = "id")
     @GeneratedValue
@@ -54,7 +41,7 @@ public class Semester{
         this.duration = duration;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH})
     @JoinTable(name = "disciplines_has_semester",
             joinColumns = @JoinColumn(name = "semester_id"),
             inverseJoinColumns = @JoinColumn(name = "disciplines_id"))

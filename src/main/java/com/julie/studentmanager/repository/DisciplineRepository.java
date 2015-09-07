@@ -1,6 +1,8 @@
 package com.julie.studentmanager.repository;
 
 import com.julie.studentmanager.domain.Discipline;
+import com.julie.studentmanager.domain.Progress;
+import com.julie.studentmanager.domain.Semester;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +18,6 @@ public class DisciplineRepository {
     @Autowired
     private SessionFactory sessionFactory;
 
-
-
     public void addDiscipline(Discipline discipline){
         this.sessionFactory.getCurrentSession().save(discipline);
     }
@@ -27,10 +27,9 @@ public class DisciplineRepository {
                 .list();
     }
 
- public List<Discipline> disciplineBySemester(Integer idSem){
-        List<Discipline> disciplines = this.sessionFactory.getCurrentSession().createQuery("from Discipline d join d.semester s where s.id=" + idSem).list();
-     return disciplines;
-    }
+/* public List<Discipline> disciplineBySemester(Integer idSem){
+        return this.sessionFactory.getCurrentSession().createQuery("from Discipline d join d.semester s where s.id=" + idSem).list();
+    }*/
 
 
     public Discipline disciplineById(Integer id){
@@ -49,10 +48,22 @@ public class DisciplineRepository {
         Discipline discipline = disciplineById(id);
 
         if(null != discipline){
+            List<Progress> progress = this.sessionFactory.getCurrentSession()
+                    .createQuery("from Progress p where p.discipline.id =" + id).list();
+            for(Progress elem: progress) {
+                this.sessionFactory.getCurrentSession().delete(elem);
+            }
+            int semId= discipline.getSemester().getId();
             this.sessionFactory.getCurrentSession().delete(discipline);
+            Semester semester = (Semester)this.sessionFactory.getCurrentSession().createCriteria(Semester.class)
+                    .add(Restrictions.idEq(semId)).uniqueResult();
+
+            List<Discipline> disciplineList = this.sessionFactory.getCurrentSession()
+                    .createQuery("select s.disciplineList from Semester s where s.id =" + semId).list();
+
+            semester.setDisciplineList(disciplineList);
+            this.sessionFactory.getCurrentSession().update(semester);
         }
-
-
     }
 
 

@@ -37,7 +37,7 @@ public class Discipline{
     private String name;
 
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH})
     @JoinTable(name = "disciplines_has_semester",
     joinColumns = @JoinColumn(name = "disciplines_id"),
     inverseJoinColumns = @JoinColumn(name = "semester_id"))

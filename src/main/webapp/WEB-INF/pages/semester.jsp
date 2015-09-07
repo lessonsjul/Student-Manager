@@ -5,29 +5,48 @@
 
 
 <t:template>
+    <nav><a href="/">На главную</a></nav>
+    <div class="content">
   <div class="">
     <form:form name="semesterForm" action="" method="get">
       <label>Выбрать семестр</label>
 
-      <select name="idSem">
-        <c:forEach items="${semesters}" var="sem">
-          <c:if test="${sem.id != semester.id}">
-            <option onselect="changeSemestr(${sem.id})" value="${sem.id}">${sem.name}</option>
-          </c:if>
-          <c:if test="${sem.id == semester.id}">
-            <option  value="${sem.id}" selected>${sem.name}</option>
-          </c:if>
-        </c:forEach>
-      </select>
+
+        <c:if test="${semesters.size() == 0}">
+        <select>
+                <option>------------</option>
+        </select>
+        </c:if>
+
+
+        <c:if test="${!empty semesters}">
+            <select name="idSem">
+
+                <c:forEach items="${semesters}" var="sem">
+
+                  <c:if test="${sem.id != semester.id}">
+                    <option onselect="changeSemestr(${sem.id})" value="${sem.id}">${sem.name}</option>
+                  </c:if>
+
+                  <c:if test="${sem.id == semester.id}">
+                    <option  value="${sem.id}" selected>${sem.name}</option>
+                  </c:if>
+
+                </c:forEach>
+            </select>
+        </c:if>
+
       <input class="button choise-button" type="button" onclick="choiseSemestr()" value="Выбрать">
   </div>
 
+        <h4>Длительность семестра: ${semester.duration} ${nedeli}</h4>
+        <h4>Сисок дисциплин семестра</h4>
 
         <div class="discipline">
             <c:if test="${!empty semester.disciplineList}">
                 <table>
                     <tr>
-                        <th>Дисциплина</th>
+                        <th>Наименование дисциплины</th>
                     </tr>
                     <c:forEach items="${semester.disciplineList}" var="disc">
                         <tr>
@@ -41,10 +60,11 @@
 
 
 <div class="choises">
-      <input class="button multi-button" type="button" value="${addButton}" onclick="addSemester()">
-      <input class="button multi-button" type="button" value="${modifButton}" onclick="editSemester()">
-      <input class="button multi-button" type="button" value="${deleteButton}" onclick="deleteSemester()">
+      <input class="button multi-button" type="button" value="Создать семестр..." onclick="addSemester()">
+      <input class="button multi-button" type="button" value="Модифицировать выбранный семестр..." onclick="editSemester()">
+      <input class="button multi-button" type="button" value="Удалить выбранный семестр" onclick="deleteSemester()">
     </div>
   </form:form>
+    </div>
 
 </t:template>

@@ -6,20 +6,23 @@
 
 
 <t:template>
-  <h3>${infoText} "${nameButton}"</h3>
+    <nav><a href="/">На главную</a> <a href="/semesters">Назад</a></nav>
+    <div class="content">
+        <c:if test="${empty semester.id}"><h3>Для создания семестра заполните следующие данные и нажмите кнопку "Создать"</h3></c:if>
+        <c:if test="${!empty semester.id}"><h3>Для модификации семестра отредактируйте данные и нажмите кнопку "Применить"</h3></c:if>
   <div class="add">
 
     <form:form action="addModifySemester" modelAttribute="semester" method="post">
 
       <form:hidden path="id" value="${semester.id}"/>
         <form:label cssClass="semLab" path="name" >Название семестра</form:label>
-        <form:input path="name" value="${semester.name}"/>
+        <form:input path="name" value="${semester.name}" />
 
       <form:label cssClass="semLab" path="duration" >Длительность(в неделях)</form:label>
-      <form:input path="duration" value="${semester.duration}"/>
+      <form:input path="duration" value="${semester.duration}" />
 
       <form:label cssClass="semLab" path="disciplineList">Дисциплины в семестре</form:label>
-      <form:select cssClass="discList" path="disciplineList" multiple="true" size="8">
+      <form:select cssClass="discList" path="disciplineList" multiple="true" size="8" >
           <c:forEach items="${disciplines}" var="d">
               <c:if test="${fn:contains(selected, d.name)}">
                   <form:option value="${d.id}" selected="selected">${d.name}</form:option>
@@ -29,9 +32,18 @@
               </c:if>
           </c:forEach>
       </form:select>
-
-      <input class="button submit-button" name="${nameButton}" type="submit" value="${nameButton}">
+        <c:if test="${!empty semester.id}"><input class="button submit-button" name="Применить" type="submit" value="Применить">
+        </c:if>
+        <br/>
+        <c:if test="${empty semester.id}"><input class="button submit-button" name="Создать" type="submit" value="Создать">
+        </c:if>
+        <br/>
+        <br/>
+        <form:errors cssClass="error" path="name"/>
+        <form:errors cssClass="error" path="duration"/>
+        <form:errors cssClass="error"  path="disciplineList"/><br/>
     </form:form>
 
   </div>
+    </div>
 </t:template>

@@ -7,9 +7,11 @@
 
 
 <t:template>
+<nav><a href="/">На главную</a></nav>
+  <div class="content">
   <form:form cssClass="studForm" name="studForm" method="GET" action="">
-    <input type="hidden" name="idSem" value="1"/>
-    <input class="button multi-button" type="submit" value="Просмотреть успеваемость выбранного студента" onclick="progress()">
+    <input type="hidden" name="idSem" value="${idSem}"/>
+    <input class="button multi-button" type="button" value="Просмотреть успеваемость выбранного студента" onclick="progress()">
     <input class="button  multi-button" type="button" value="Создать студента..." onclick="addStudent()">
     <input class="button  multi-button" type="button" value="Модифицировать выбранного студента..." onclick="editStudent()">
     <input class="button  multi-button" type="button" value="Удалить выбранных студентов" onclick="deleteStudent()">
@@ -36,6 +38,6 @@
     </table>
   </c:if>
   </form:form>
-
+  </div>
 </t:template>
 

@@ -6,7 +6,10 @@
 
 
 <t:template>
-  <h3>${infoText} "${nameButton}"</h3>
+  <nav><a href="/">На главную</a> <a href="/students">Назад</a></nav>
+  <div class="content">
+  <c:if test="${empty student.id}"><h3>Для создания студента заполните все поля и нажмите кнопку "Создать"</h3></c:if>
+  <c:if test="${!empty student.id}"><h3>Для модификации, введите новые значения и нажмите кнопку "Применить"</h3></c:if>
   <div class="add">
   <form:form action="addModifyStudent" modelAttribute="student" method="post">
     <form:hidden path="id" value="${student.id}"/>
@@ -21,9 +24,21 @@
 
     <form:label path="entranceDate">Дата поступления</form:label>
     <fmt:formatDate var="dateEntr" value='${student.entranceDate}' type='date' pattern='dd/MM/yyyy'/>
-    <form:input path="entranceDate" value="${dataEntr}" /><br/>
+    <form:input path="entranceDate" value="${dateEntr}" /><br/>
 
-    <input class="button submit-button" name="${nameButton}" type="submit" value="${nameButton}">
+    <c:if test="${!empty student.id}"><input class="button submit-button" name="Применить" type="submit" value="Применить">
+    </c:if>
+  <br/>
+    <c:if test="${empty student.id}"><input class="button submit-button" name="Создать" type="submit" value="Создать">
+    </c:if>
+    <br/>
+    <br/>
+    <form:errors cssClass="error" path="secondName"/>
+    <form:errors cssClass="error" path="firstName"/>
+    <form:errors cssClass="error"  path="group"/>
+    <form:errors cssClass="error"  path="entranceDate"/><br/>
+
   </form:form>
+  </div>
   </div>
 </t:template>

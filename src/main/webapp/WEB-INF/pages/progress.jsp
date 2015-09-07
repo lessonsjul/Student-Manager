@@ -5,6 +5,8 @@
 
 
 <t:template>
+  <nav><a href="/">На главную</a> <a href="/students">Назад</a></nav>
+  <div class="content">
   <h4>Отображена успеваемость для следующего студента:</h4>
   <table>
     <tr>
@@ -39,6 +41,7 @@
   </div>
   <div class="choises">
     <form:form name="semesterForm" action="progress" method="get">
+      <%--<input type="text" name="idStud" value="${student.id}">--%>
       <input type="hidden" name="idStud" value="${student.id}">
     <label>Выбрать семестр</label>
 
@@ -56,5 +59,6 @@
     </form:form>
   <h5>Средняя оценка за семестр: ${avaragePoint} балла</h5>
   </div>
+    </div>
 
 </t:template>

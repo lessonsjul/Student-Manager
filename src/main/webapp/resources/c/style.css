@@ -14,8 +14,16 @@ header{
 }
 
 main{
+    width: 100%;
+}
+
+nav{
+    width: 20%;
+    float: left;
+}
+.content{
     width: 800px;
-    margin: auto;
+    float: left;
 }
 
 .index a{
@@ -114,6 +122,10 @@ label + select{
     width: 150px;
     position: relative;
     right: 45px;
+}
+
+.error{
+    color: red;
 }
 
 

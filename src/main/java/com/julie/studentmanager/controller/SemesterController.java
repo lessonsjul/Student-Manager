@@ -3,9 +3,11 @@ package com.julie.studentmanager.controller;
 import com.julie.studentmanager.domain.Discipline;
 import com.julie.studentmanager.domain.Semester;
 import com.julie.studentmanager.repository.SemesterRepository;
+import com.julie.studentmanager.validation.SemesterValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,29 +21,45 @@ import java.util.Set;
 public class SemesterController {
     
     private SemesterRepository semesterRepository;
+    private SemesterValidator semesterValidator;
 
 
     @Autowired
-    public SemesterController(SemesterRepository semesterRepository) {
+    public SemesterController(SemesterRepository semesterRepository, SemesterValidator semesterValidator) {
         this.semesterRepository = semesterRepository;
+        this.semesterValidator = semesterValidator;
     }
 
     @RequestMapping(value = "/semesters", method = RequestMethod.GET)
     public String  semesterList(@RequestParam(value = "idSem", required = false) Integer idSem, Model model) {
+        Semester semester;
         List<Semester> semesterList = this.semesterRepository.semesterList();
-        Semester semester = null;
-        if(null !=idSem) {
-           semester = this.semesterRepository.getSemesterByIdWithDiscipl(idSem);
+
+        if(idSem == null){
+            if(semesterList.size() != 0) {
+                semester = this.semesterRepository.getSemesterByIdWithDiscipl(semesterList.get(0).getId());
+            } else {semester = null;}
         }else {
-            semester = this.semesterRepository.getSemesterByIdWithDiscipl(semesterList.get(0).getId());
+           semester = this.semesterRepository.getSemesterByIdWithDiscipl(idSem);
         }
 
+        String nedeli = "недель";
+        if(semester != null){
+            int dur = semester.getDuration();
+            if(dur >= 5 && dur <= 20){
+                nedeli = "недель";
+            }else if(dur == 1 || dur % 10 == 1){
+                nedeli = "неделя";
+            } else if(dur % 10 >= 2 && dur % 10 <= 4 ){
+                nedeli = "недели";
+            }
+        }
+
+
+        model.addAttribute("nedeli",nedeli);
         model.addAttribute("semesters",semesterList);
         model.addAttribute("semester",semester);
         model.addAttribute("choiseSem",idSem);
-        model.addAttribute("addButton", "Создать семестр...");
-        model.addAttribute("modifButton", "Модифицировать выбранный семестр...");
-        model.addAttribute("deleteButton", "Удалить выбранный семестр");
 
         return "semester";
     }
@@ -52,14 +70,13 @@ public class SemesterController {
 
         model.addAttribute("semester", new Semester());
         model.addAttribute("disciplines", disciplineList);
-        model.addAttribute("nameButton", "Создать");
-        model.addAttribute("infoText", "Для создания семестра заполните следующие данные и нажмите кнопку");
         return "addSemester";
     }
 
     @RequestMapping(value = "/editSemester", method = RequestMethod.GET)
     public String editSemester(@RequestParam("idSem")Integer id, Model model){
-        Semester semester = this.semesterRepository.getSemesterById(id);
+
+        Semester semester = this.semesterRepository.getSemesterByIdWithDiscipl(id);
         List<Discipline> disciplineListBySemId = this.semesterRepository.getDisciplineListBySemId(id);
         Set<String> selected = new HashSet<String>();
 
@@ -71,19 +88,32 @@ public class SemesterController {
         model.addAttribute("semester", semester);
         model.addAttribute("selected", selected);
         model.addAttribute("disciplines", disciplineList);
-        model.addAttribute("nameButton", "Применить");
-        model.addAttribute("infoText", "Для модификации семестра отредактируйте данные и нажмите кнопку");
         return "addSemester";
     }
 
     @RequestMapping(value = "/addModifySemester", method = RequestMethod.POST)
     public String addSemester(@ModelAttribute("semester") Semester semester,
-                              @RequestParam("id") Integer idSem,
-                              @RequestParam("disciplineList")List<Discipline> disciplines){
+                              BindingResult bindingResult, Model model){
+        this.semesterValidator.validate(semester,bindingResult);
+        if(bindingResult.hasErrors()){
+            if(null != semester.getId()){
+                List<Discipline> disciplineListBySemId = this.semesterRepository.getDisciplineListBySemId(semester.getId());
+                Set<String> selected = new HashSet<String>();
+
+                for(Discipline elem: disciplineListBySemId){
+                    selected.add(elem.getName());
+                }
+                model.addAttribute("selected",selected);
+            }
+            Set<Discipline> disciplineList = new HashSet<Discipline>(this.semesterRepository.getDisciplineList());
+            model.addAttribute("disciplines",disciplineList);
+
+            return "addSemester";
+        }
         if(semester.getId() == null) {
-            this.semesterRepository.addSemester(semester,disciplines);
+            this.semesterRepository.addSemester(semester,semester.getDisciplineList());
         }else{
-            this.semesterRepository.editSemester(semester,idSem,disciplines);
+            this.semesterRepository.editSemester(semester,semester.getId(),semester.getDisciplineList());
         }
 
         return "redirect:semesters";

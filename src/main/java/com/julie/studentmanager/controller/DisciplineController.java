@@ -2,9 +2,11 @@ package com.julie.studentmanager.controller;
 
 import com.julie.studentmanager.domain.Discipline;
 import com.julie.studentmanager.repository.DisciplineRepository;
+import com.julie.studentmanager.validation.DisciplineValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,10 +19,13 @@ import java.util.Set;
 public class DisciplineController {
 
     private DisciplineRepository disciplineRepository;
+    private DisciplineValidator disciplineValidator;
+
 
     @Autowired
-    private DisciplineController(DisciplineRepository disciplineRepository){
+    private DisciplineController(DisciplineRepository disciplineRepository, DisciplineValidator disciplineValidator){
         this.disciplineRepository = disciplineRepository;
+        this.disciplineValidator= disciplineValidator;
     }
 
     @RequestMapping(value = "/disciplines", method = RequestMethod.GET)
@@ -35,8 +40,6 @@ public class DisciplineController {
     public String addDiscipline(Model model){
 
         model.addAttribute("discipline", new Discipline());
-        model.addAttribute("nameButton", "Создать");
-        model.addAttribute("infoText", "Для того чтобы создать дисциплину заполните все поля и нажмите кнопку");
         return "addDiscipline";
     }
 
@@ -45,13 +48,15 @@ public class DisciplineController {
         Discipline discipline = this.disciplineRepository.disciplineById(id);
 
         model.addAttribute("discipline", discipline);
-        model.addAttribute("nameButton", "Применить");
-        model.addAttribute("infoText", "Для того чтобы модифицировать дисциплину, введите новое значение поля и нажмите кнопку");
         return "addDiscipline";
     }
 
     @RequestMapping(value = "/addModifyDiscipline", method = RequestMethod.POST)
-    public String addDiscipline(@ModelAttribute("discipline") Discipline discipline){
+    public String addDiscipline(@ModelAttribute("discipline") Discipline discipline, BindingResult bindingResult){
+        this.disciplineValidator.validate(discipline,bindingResult);
+        if(bindingResult.hasErrors())
+            return "addDiscipline";
+
         if(discipline.getId() == null) {
             this.disciplineRepository.addDiscipline(discipline);
         }else{

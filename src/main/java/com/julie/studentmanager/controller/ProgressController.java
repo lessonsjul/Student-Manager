@@ -42,10 +42,11 @@ public class ProgressController {
 
         while(itr.hasNext()){
             Object[] obj = (Object[]) itr.next();
-            Discipline discipline = (Discipline) obj[2];
             int value = Integer.parseInt(String.valueOf(obj[0]));
-            values.put(discipline,value);
             Student st = (Student) obj[1];
+            Discipline discipline = (Discipline) obj[2];
+
+            values.put(discipline,value);
             if(student == null){
                 student = st;
             }

@@ -1,6 +1,7 @@
 package com.julie.studentmanager.repository;
 
 import com.julie.studentmanager.domain.Discipline;
+import com.julie.studentmanager.domain.Progress;
 import com.julie.studentmanager.domain.Semester;
 import org.hibernate.Hibernate;
 import org.hibernate.SessionFactory;
@@ -20,7 +21,7 @@ public class SemesterRepository {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public void addSemester(Semester semester,List<Discipline> disciplineList){
+    protected List<Discipline> refactorDisciplineList(List<Discipline> disciplineList){
         List<Discipline> allDisciplines = new ArrayList<Discipline>();
         for (Discipline elem: disciplineList){
             Integer idDisc = Integer.parseInt(elem.getName());
@@ -28,21 +29,20 @@ public class SemesterRepository {
                     .add(Restrictions.idEq(idDisc)).addOrder(Order.asc("semester")).uniqueResult();
             allDisciplines.add(d);
         }
+        return allDisciplines;
+    }
 
+    public void addSemester(Semester semester,List<Discipline> disciplineList){
+        List<Discipline> allDisciplines = refactorDisciplineList(disciplineList);
         semester.setDisciplineList(allDisciplines);
         this.sessionFactory.getCurrentSession().saveOrUpdate(semester);
     }
 
     public void editSemester(Semester semester, Integer id, List<Discipline> disciplineList){
-        List<Discipline> allDisciplines = new ArrayList<Discipline>();
-        for (Discipline elem: disciplineList){
-            Integer idDisc = Integer.parseInt(elem.getName());
-            Discipline d = (Discipline)this.sessionFactory.getCurrentSession().createCriteria(Discipline.class)
-                    .add(Restrictions.idEq(idDisc)).addOrder(Order.asc("semester")).uniqueResult();
-            allDisciplines.add(d);
-        }
+        List<Discipline> allDisciplines = refactorDisciplineList(disciplineList);
 
         Semester semesterToUpdate = getSemesterByIdWithDiscipl(id);
+
         semesterToUpdate.setName(semester.getName());
         semesterToUpdate.setDuration(semester.getDuration());
         semesterToUpdate.setDisciplineList(allDisciplines);
@@ -56,7 +56,6 @@ public class SemesterRepository {
     public Semester getSemesterById(Integer idSem){
         return (Semester)this.sessionFactory.getCurrentSession().createCriteria(Semester.class)
                 .add(Restrictions.idEq(idSem)).uniqueResult();
-
     }
 
     public Semester getSemesterByIdWithDiscipl(Integer idSem){
@@ -79,6 +78,11 @@ public class SemesterRepository {
         Semester semester = (Semester)this.sessionFactory.getCurrentSession().get(Semester.class,id);
 
         if(null != semester){
+            List<Progress> progress = this.sessionFactory.getCurrentSession()
+                    .createQuery("from Progress p where p.discipline.semester.id=" + id).list();
+            for(Progress elem: progress) {
+                this.sessionFactory.getCurrentSession().delete(elem);
+            }
             this.sessionFactory.getCurrentSession().delete(semester);
         }
     }

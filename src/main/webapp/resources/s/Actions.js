@@ -1,7 +1,6 @@
-    function progress()
+function progress()
     {
         document.studForm.action = "progress";
-        document.studForm.createAttribute("idStud").value = 1;
         studForm.submit();
     }
 

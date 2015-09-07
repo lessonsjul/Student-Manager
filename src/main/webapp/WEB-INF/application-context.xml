@@ -6,7 +6,7 @@
 
 
        <context:property-placeholder location="classpath:jdbc.properties" system-properties-mode="ENVIRONMENT"/>
-       <context:component-scan base-package="com.julie.studentmanager.repository"/>
+       <context:component-scan base-package="com.julie.studentmanager.repository, com.julie.studentmanager.validation"/>
 
        <tx:annotation-driven transaction-manager="transactionManager"/>
 
@@ -27,7 +27,7 @@
               <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"/>
               <property name="hibernateProperties">
                      <props>
-                            <!--<prop key="hbm2ddl.auto">validate</prop>-->
+                            <prop key="hbm2ddl.auto">validate</prop>
                             <prop key="hibernate.show_sql">true</prop>
                             <prop key="hibernate.dialect">${jdbc.dialect}</prop>
                             <!--<prop key="hibernate.current_session_context_class">thread</prop>-->

@@ -5,6 +5,8 @@
 
 
 <t:template>
+  <nav><a href="/">На главную</a></nav>
+  <div class="content">
   <form:form cssClass="" name="disciplForm" method="GET" action="">
 
   <div class="discipline">
@@ -19,7 +21,6 @@
         <tr>
           <td><input type="checkbox" value="${discipl.id}" name="idDiscipl"></td>
           <td>${discipl.name}</td>
-          <%--<td>${discipl}</td>--%>
         </tr>
       </c:forEach>
       </c:if>
@@ -33,5 +34,5 @@
     <input class="button multi-button" type="button" value="Удалить выбранную дисциплину" onclick="deleteDiscipline()">
     </div>
   </form:form>
-
+</div>
 </t:template>

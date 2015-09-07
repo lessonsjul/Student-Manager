@@ -1,5 +1,6 @@
 package com.julie.studentmanager.repository;
 
+import com.julie.studentmanager.domain.Progress;
 import com.julie.studentmanager.domain.Student;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,13 @@ public class StudentRepository{
         Student student = studentById(id);
 
         if(null != student){
+            List<Progress> progress = this.sessionFactory.getCurrentSession()
+                    .createQuery("from Progress p where p.student.id =" + id).list();
+
+            for(Progress elem: progress) {
+                this.sessionFactory.getCurrentSession().delete(elem);
+            }
+
             this.sessionFactory.getCurrentSession().delete(student);
         }
     }
