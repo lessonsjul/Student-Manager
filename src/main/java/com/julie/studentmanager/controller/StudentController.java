@@ -5,6 +5,7 @@ import com.julie.studentmanager.repository.SemesterRepository;
 import com.julie.studentmanager.repository.StudentRepository;
 import com.julie.studentmanager.validation.StudentValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -42,12 +43,14 @@ public class StudentController {
     }
 
     @RequestMapping(value = "/addStudent", method = RequestMethod.GET)
+    @PreAuthorize("hasRose('admin')")
     public String addStudent(Model model) {
         model.addAttribute("student", new Student());
         return "addStudent";
     }
 
     @RequestMapping(value = "/editStudent", method = RequestMethod.GET)
+    @PreAuthorize("hasRose('admin')")
     public String editStudent(@RequestParam("idStud")Integer id, Model model){
         Student student = this.studentRepository.studentById(id);
 
@@ -70,6 +73,7 @@ public class StudentController {
     }
 
     @RequestMapping(value = "/deleteStudent", method = RequestMethod.GET)
+    @PreAuthorize("hasRose('admin')")
     public String deleteStudent(@RequestParam("idStud")Integer id){
         this.studentRepository.removeStudent(id);
         return "redirect:students";

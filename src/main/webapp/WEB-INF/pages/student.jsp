@@ -4,6 +4,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 
 <t:template>
@@ -12,9 +13,11 @@
   <form:form cssClass="studForm" name="studForm" method="GET" action="">
     <input type="hidden" name="idSem" value="${idSem}"/>
     <input class="button multi-button" type="button" value="Просмотреть успеваемость выбранного студента" onclick="progress()">
+    <sec:authorize access="hasRole('admin')">
     <input class="button  multi-button" type="button" value="Создать студента..." onclick="addStudent()">
     <input class="button  multi-button" type="button" value="Модифицировать выбранного студента..." onclick="editStudent()">
     <input class="button  multi-button" type="button" value="Удалить выбранных студентов" onclick="deleteStudent()">
+    </sec:authorize>
 <h4>Список студентов</h4>
   <c:if test="${!empty students}">
 

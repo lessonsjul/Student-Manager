@@ -4,6 +4,7 @@ import com.julie.studentmanager.domain.Discipline;
 import com.julie.studentmanager.repository.DisciplineRepository;
 import com.julie.studentmanager.validation.DisciplineValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,6 +38,7 @@ public class DisciplineController {
     }
 
     @RequestMapping(value = "/addDiscipline", method = RequestMethod.GET)
+    @PreAuthorize("hasRose('admin')")
     public String addDiscipline(Model model){
 
         model.addAttribute("discipline", new Discipline());
@@ -44,6 +46,7 @@ public class DisciplineController {
     }
 
     @RequestMapping(value = "/editDiscipline", method = RequestMethod.GET)
+    @PreAuthorize("hasRose('admin')")
     public String editDisicpline(@RequestParam("idDiscipl")Integer id, Model model){
         Discipline discipline = this.disciplineRepository.disciplineById(id);
 
@@ -66,6 +69,7 @@ public class DisciplineController {
     }
 
     @RequestMapping(value = "/deleteDiscipline", method = RequestMethod.GET)
+    @PreAuthorize("hasRose('admin')")
     public String deleteDiscipline(@RequestParam("idDiscipl")Integer id){
         this.disciplineRepository.removeDiscipline(id);
         return "redirect:disciplines";

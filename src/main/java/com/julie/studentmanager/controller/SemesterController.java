@@ -5,6 +5,7 @@ import com.julie.studentmanager.domain.Semester;
 import com.julie.studentmanager.repository.SemesterRepository;
 import com.julie.studentmanager.validation.SemesterValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -65,6 +66,7 @@ public class SemesterController {
     }
 
     @RequestMapping(value = "/addSemester", method = RequestMethod.GET)
+    @PreAuthorize("hasRose('admin')")
     public String addSemester(Model model){
         Set<Discipline> disciplineList = new HashSet<Discipline>(this.semesterRepository.getDisciplineList());
 
@@ -74,6 +76,7 @@ public class SemesterController {
     }
 
     @RequestMapping(value = "/editSemester", method = RequestMethod.GET)
+    @PreAuthorize("hasRose('admin')")
     public String editSemester(@RequestParam("idSem")Integer id, Model model){
 
         Semester semester = this.semesterRepository.getSemesterByIdWithDiscipl(id);
@@ -120,6 +123,7 @@ public class SemesterController {
     }
 
     @RequestMapping(value = "/deleteSemester", method = RequestMethod.GET)
+    @PreAuthorize("hasRose('admin')")
     public String deleteStudent(@RequestParam("idSem") Integer idSem){
 
         if (null != idSem) this.semesterRepository.removeSemester(idSem);
