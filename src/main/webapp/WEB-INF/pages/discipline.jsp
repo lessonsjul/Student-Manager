@@ -14,13 +14,17 @@
   <c:if test="${!empty disciplines}">
     <table>
       <tr>
+        <sec:authorize access="hasRole('admin')">
         <th></th>
+        </sec:authorize>
         <th>Наименование дисциплины</th>
       </tr>
       <c:if test="${!empty disciplines}" >
       <c:forEach items="${disciplines}" var="discipl">
         <tr>
+          <sec:authorize access="hasRole('admin')">
           <td><input type="checkbox" value="${discipl.id}" name="idDiscipl"></td>
+          </sec:authorize>
           <td>${discipl.name}</td>
         </tr>
       </c:forEach>

@@ -75,14 +75,19 @@ public class SemesterRepository {
     }
 
     public void removeSemester(Integer id){
-        Semester semester = (Semester)this.sessionFactory.getCurrentSession().get(Semester.class,id);
-
+        Semester semester = getSemesterById(id);
         if(null != semester){
-            List<Progress> progress = this.sessionFactory.getCurrentSession()
-                    .createQuery("from Progress p where p.discipline.semester.id=" + id).list();
-            for(Progress elem: progress) {
-                this.sessionFactory.getCurrentSession().delete(elem);
+            List<Discipline> disciplineList = getDisciplineListBySemId(id);
+            for(Discipline disc : disciplineList){
+                if(disc.getSemesterList().size() == 1){
+                    List<Progress> progress = this.sessionFactory.getCurrentSession()
+                            .createQuery("from Progress p where p.discipline.id=" + disc.getId()).list();
+                    for(Progress prog: progress) {
+                        this.sessionFactory.getCurrentSession().delete(prog);
+                    }
+                }
             }
+
             this.sessionFactory.getCurrentSession().delete(semester);
         }
     }

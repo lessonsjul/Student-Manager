@@ -45,25 +45,30 @@ public class DisciplineRepository {
     }
 
     public void removeDiscipline(Integer id){
-        Discipline discipline = disciplineById(id);
+            Discipline discipline = disciplineById(id);
 
-        if(null != discipline){
+            if(null != discipline) {
+                //delete all progress with current discipline
             List<Progress> progress = this.sessionFactory.getCurrentSession()
                     .createQuery("from Progress p where p.discipline.id =" + id).list();
-            for(Progress elem: progress) {
-                this.sessionFactory.getCurrentSession().delete(elem);
+                for (Progress elem : progress) {
+                    this.sessionFactory.getCurrentSession().delete(elem);
+                }
+
+                List<Semester> semesterList = discipline.getSemesterList();
+                this.sessionFactory.getCurrentSession().delete(discipline);
+                updateSemesterList(discipline.getId(),semesterList);
             }
-            int semId= discipline.getSemester().getId();
-            this.sessionFactory.getCurrentSession().delete(discipline);
-            Semester semester = (Semester)this.sessionFactory.getCurrentSession().createCriteria(Semester.class)
-                    .add(Restrictions.idEq(semId)).uniqueResult();
+    }
 
-            List<Discipline> disciplineList = this.sessionFactory.getCurrentSession()
-                    .createQuery("select s.disciplineList from Semester s where s.id =" + semId).list();
+    public void updateSemesterList(Integer idDisc, List<Semester> semesterList){
+           for(Semester elem: semesterList){
+               List<Discipline> disciplineList = this.sessionFactory.getCurrentSession()
+                       .createQuery("from Discipline d where d.semester.id=" + elem.getId()).list();
+               elem.setDisciplineList(disciplineList);
+               this.sessionFactory.getCurrentSession().update(elem);
 
-            semester.setDisciplineList(disciplineList);
-            this.sessionFactory.getCurrentSession().update(semester);
-        }
+           }
     }
 
 

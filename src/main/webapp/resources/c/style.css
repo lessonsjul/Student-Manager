@@ -1,16 +1,33 @@
 @charset "UTF-8";
+*{
+    margin: 0;
+    padding: 0;
+}
 body{
     background: #dfdfdf;
     font-family:Comic Sans MS, sans-serif;
 }
 
 header{
+    margin: 0 auto;
+    margin-bottom: 20px;
+    margin-left: 20%;
+}
+
+.capture{
     width: 800px;
     border: 1px solid gray;
     text-align: center;
-    margin: auto;
     background: whitesmoke;
-    margin-bottom: 20px;
+    line-height: 4em;
+    font-size: 22px;
+    float: left;
+}
+
+.clearfix:after{
+    content: "";
+    display: block;
+    clear: both;
 }
 
 main{
@@ -26,6 +43,9 @@ nav{
     float: left;
 }
 
+.index{
+    margin-left: 20%;
+}
 .index a{
     display: block;
     float: left;

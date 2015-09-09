@@ -1,6 +1,7 @@
 package com.julie.studentmanager.domain;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "disciplines")
@@ -36,11 +37,10 @@ public class Discipline{
     }
     private String name;
 
-
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH})
     @JoinTable(name = "disciplines_has_semester",
-    joinColumns = @JoinColumn(name = "disciplines_id"),
-    inverseJoinColumns = @JoinColumn(name = "semester_id"))
+    joinColumns = @JoinColumn(name = "disciplines_id", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "semester_id", referencedColumnName = "id"))
     public Semester getSemester() {
         return semester;
     }
@@ -49,5 +49,17 @@ public class Discipline{
         this.semester = semester;
     }
     private Semester semester;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH})
+    @JoinTable(name = "disciplines_has_semester",
+    joinColumns = @JoinColumn(name = "disciplines_id"),
+    inverseJoinColumns = @JoinColumn(name = "semester_id"))
+    public List<Semester> getSemesterList(){
+        return this.semesterList;
+    }
+    public void setSemesterList(List<Semester> semesterList){
+        this.semesterList = semesterList;
+    }
+    private List<Semester> semesterList;
 
 }

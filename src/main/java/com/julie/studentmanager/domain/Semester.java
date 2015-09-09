@@ -53,4 +53,5 @@ public class Semester{
         this.disciplineList = disciplineList;
     }
     private List<Discipline> disciplineList;
+
 }

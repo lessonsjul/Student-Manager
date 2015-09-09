@@ -10,14 +10,15 @@
     <link href="<c:url value="/resources/c/style.css"/>" rel="stylesheet">
 </head>
 <body>
-<sec:authorize access="isAnonymous()">
-    <a href="/spring_security_login">LogIn</a>
-</sec:authorize>
-<sec:authorize access="isAuthenticated()">
-    <a href="/j_spring_security_logout">LogOut</a>
-</sec:authorize>
-<header><h3>Система управления студентами и их успеваемостью</h3>
+<header class="clearfix"><p class="capture">Система управления студентами и их успеваемостью</p>
+    <sec:authorize access="isAnonymous()">
+        <a href="/spring_security_login">LogIn</a>
+    </sec:authorize>
+    <sec:authorize access="isAuthenticated()">
+        <a href="/j_spring_security_logout">LogOut</a>
+    </sec:authorize>
 </header>
+
 <main>
     <jsp:doBody/>
 </main>

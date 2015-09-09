@@ -24,7 +24,7 @@ public class Progress{
     }
     private int value;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "students_id", referencedColumnName = "id")
     public Student getStudent() {
         return student;
