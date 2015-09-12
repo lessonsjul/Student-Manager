@@ -32,13 +32,13 @@ public class SemesterRepository {
         return allDisciplines;
     }
 
-    public void addSemester(Semester semester,List<Discipline> disciplineList){
+    public void setSemester(Semester semester, List<Discipline> disciplineList){
         List<Discipline> allDisciplines = refactorDisciplineList(disciplineList);
         semester.setDisciplineList(allDisciplines);
         this.sessionFactory.getCurrentSession().saveOrUpdate(semester);
     }
 
-    public void editSemester(Semester semester, Integer id, List<Discipline> disciplineList){
+    public void updateSemester(Semester semester, Integer id, List<Discipline> disciplineList){
         List<Discipline> allDisciplines = refactorDisciplineList(disciplineList);
 
         Semester semesterToUpdate = getSemesterByIdWithDiscipl(id);
@@ -49,7 +49,7 @@ public class SemesterRepository {
         this.sessionFactory.getCurrentSession().saveOrUpdate(semesterToUpdate);
     }
 
-    public List<Semester> semesterList(){
+    public List<Semester> getSemesterList(){
         return this.sessionFactory.getCurrentSession().createQuery("from Semester s").list();
     }
 

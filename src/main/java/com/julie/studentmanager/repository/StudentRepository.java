@@ -16,20 +16,20 @@ public class StudentRepository{
     @Autowired
     private SessionFactory sessionFactory;
 
-    public void addStudent(Student student){
+    public void setStudent(Student student){
         this.sessionFactory.getCurrentSession().save(student);
     }
 
-    public List<Student> studentList(){
+    public List<Student> getStudentList(){
         return this.sessionFactory.getCurrentSession().createQuery("from Student ").list();
     }
 
-    public Student studentById(Integer id){
+    public Student getStudentById(Integer id){
         return (Student) this.sessionFactory.getCurrentSession().get(Student.class, id);
     }
 
-    public void editStudent(Student student){
-        Student studentToUpdate = studentById(student.getId());
+    public void updateStudent(Student student){
+        Student studentToUpdate = getStudentById(student.getId());
 
         studentToUpdate.setFirstName(student.getFirstName());
         studentToUpdate.setSecondName(student.getSecondName());
@@ -40,7 +40,7 @@ public class StudentRepository{
     }
 
     public void removeStudent(Integer id){
-        Student student = studentById(id);
+        Student student = getStudentById(id);
 
         if(null != student){
             List<Progress> progress = this.sessionFactory.getCurrentSession()

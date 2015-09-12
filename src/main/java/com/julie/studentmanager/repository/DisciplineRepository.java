@@ -18,7 +18,7 @@ public class DisciplineRepository {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public void addDiscipline(Discipline discipline){
+    public void setDiscipline(Discipline discipline){
         this.sessionFactory.getCurrentSession().save(discipline);
     }
 
@@ -32,20 +32,20 @@ public class DisciplineRepository {
     }*/
 
 
-    public Discipline disciplineById(Integer id){
+    public Discipline getDisciplineById(Integer id){
         return (Discipline) this.sessionFactory.getCurrentSession().createCriteria(Discipline.class)
                 .add(Restrictions.idEq(id)).uniqueResult();
     }
 
-    public void editDiscipline(Discipline discipline){
-        Discipline disciplineToUpdate = disciplineById(discipline.getId());
+    public void updateDiscipline(Discipline discipline){
+        Discipline disciplineToUpdate = getDisciplineById(discipline.getId());
         disciplineToUpdate.setName(discipline.getName());
 
         this.sessionFactory.getCurrentSession().update(disciplineToUpdate);
     }
 
     public void removeDiscipline(Integer id){
-            Discipline discipline = disciplineById(id);
+            Discipline discipline = getDisciplineById(id);
 
             if(null != discipline) {
                 //delete all progress with current discipline
@@ -57,11 +57,11 @@ public class DisciplineRepository {
 
                 List<Semester> semesterList = discipline.getSemesterList();
                 this.sessionFactory.getCurrentSession().delete(discipline);
-                updateSemesterList(discipline.getId(),semesterList);
+                updateSemesterList(semesterList);
             }
     }
 
-    public void updateSemesterList(Integer idDisc, List<Semester> semesterList){
+    public void updateSemesterList(List<Semester> semesterList){
            for(Semester elem: semesterList){
                List<Discipline> disciplineList = this.sessionFactory.getCurrentSession()
                        .createQuery("from Discipline d where d.semester.id=" + elem.getId()).list();

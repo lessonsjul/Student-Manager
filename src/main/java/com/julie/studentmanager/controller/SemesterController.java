@@ -34,7 +34,7 @@ public class SemesterController {
     @RequestMapping(value = "/semesters", method = RequestMethod.GET)
     public String  semesterList(@RequestParam(value = "idSem", required = false) Integer idSem, Model model) {
         Semester semester;
-        List<Semester> semesterList = this.semesterRepository.semesterList();
+        List<Semester> semesterList = this.semesterRepository.getSemesterList();
 
         if(idSem == null){
             if(semesterList.size() != 0) {
@@ -114,9 +114,9 @@ public class SemesterController {
             return "addSemester";
         }
         if(semester.getId() == null) {
-            this.semesterRepository.addSemester(semester,semester.getDisciplineList());
+            this.semesterRepository.setSemester(semester, semester.getDisciplineList());
         }else{
-            this.semesterRepository.editSemester(semester,semester.getId(),semester.getDisciplineList());
+            this.semesterRepository.updateSemester(semester, semester.getId(), semester.getDisciplineList());
         }
 
         return "redirect:semesters";

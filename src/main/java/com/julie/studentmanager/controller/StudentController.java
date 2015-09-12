@@ -32,9 +32,9 @@ public class StudentController {
 
     @RequestMapping(value = "/students", method = RequestMethod.GET)
     public String getStudents(Model model) {
-        List<Student> studentList = this.studentRepository.studentList();
-        if(0 != this.semesterRepository.semesterList().size()){
-            int idSem = this.semesterRepository.semesterList().get(0).getId();
+        List<Student> studentList = this.studentRepository.getStudentList();
+        if(0 != this.semesterRepository.getSemesterList().size()){
+            int idSem = this.semesterRepository.getSemesterList().get(0).getId();
             model.addAttribute("idSem", idSem);
         }
 
@@ -52,7 +52,7 @@ public class StudentController {
     @RequestMapping(value = "/editStudent", method = RequestMethod.GET)
     @PreAuthorize("hasRose('admin')")
     public String editStudent(@RequestParam("idStud")Integer id, Model model){
-        Student student = this.studentRepository.studentById(id);
+        Student student = this.studentRepository.getStudentById(id);
 
         model.addAttribute("student", student);
         return "addStudent";
@@ -65,9 +65,9 @@ public class StudentController {
             return "addStudent";
 
         if(student.getId() == null) {
-            this.studentRepository.addStudent(student);
+            this.studentRepository.setStudent(student);
         }else{
-            this.studentRepository.editStudent(student);
+            this.studentRepository.updateStudent(student);
         }
         return "redirect: students";
     }

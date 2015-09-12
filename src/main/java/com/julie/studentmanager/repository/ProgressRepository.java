@@ -16,7 +16,7 @@ public class ProgressRepository {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public List<Object> progressListByStudIdAndSemId(Integer stuId, Integer semId) {
+    public List<Object> getProgressListByStudIdAndSemId(Integer stuId, Integer semId) {
 //        String sql = "select p.value, p.student, p.discipline from Progress p join p.student s join p.discipline d " +
 //                "where s.id=?";
         String sql = "select p.value, p.student, p.discipline from Progress p join p.student s join p.discipline d " +
@@ -29,7 +29,7 @@ public class ProgressRepository {
     }
 
 
-    public double avarageValue(Integer stuId, Integer semId){
+    public double getAvarageValueOfProgress(Integer stuId, Integer semId){
         Object s = this.sessionFactory.getCurrentSession()
                 .createQuery("select AVG(p.value) from Progress p" +
                         " where p.discipline.semester.id=" + semId + " and p.student.id=" + stuId).uniqueResult();

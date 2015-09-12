@@ -48,7 +48,7 @@ public class DisciplineController {
     @RequestMapping(value = "/editDiscipline", method = RequestMethod.GET)
     @PreAuthorize("hasRose('admin')")
     public String editDisicpline(@RequestParam("idDiscipl")Integer id, Model model){
-        Discipline discipline = this.disciplineRepository.disciplineById(id);
+        Discipline discipline = this.disciplineRepository.getDisciplineById(id);
 
         model.addAttribute("discipline", discipline);
         return "addDiscipline";
@@ -61,9 +61,9 @@ public class DisciplineController {
             return "addDiscipline";
 
         if(discipline.getId() == null) {
-            this.disciplineRepository.addDiscipline(discipline);
+            this.disciplineRepository.setDiscipline(discipline);
         }else{
-            this.disciplineRepository.editDiscipline(discipline);
+            this.disciplineRepository.updateDiscipline(discipline);
         }
         return "redirect: disciplines";
     }

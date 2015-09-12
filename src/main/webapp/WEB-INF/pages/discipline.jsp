@@ -8,10 +8,12 @@
 <t:template>
   <nav><a href="/">На главную</a></nav>
   <div class="content">
+    <c:if test="${empty disciplines}">
+      <h4>Дисциплины отсутствуют</h4>
+    </c:if>
   <form:form cssClass="" name="disciplForm" method="GET" action="">
-
   <div class="discipline">
-  <c:if test="${!empty disciplines}">
+    <c:if test="${!empty disciplines}" >
     <table>
       <tr>
         <sec:authorize access="hasRole('admin')">
@@ -19,7 +21,6 @@
         </sec:authorize>
         <th>Наименование дисциплины</th>
       </tr>
-      <c:if test="${!empty disciplines}" >
       <c:forEach items="${disciplines}" var="discipl">
         <tr>
           <sec:authorize access="hasRole('admin')">
@@ -31,13 +32,14 @@
       </c:if>
 
     </table>
-  </c:if>
   </div>
     <sec:authorize access="hasRole('admin')">
     <div class="choises">
     <input class="button multi-button" type="button" value="Создать дисциплину..." onclick="addDiscipline()">
+      <c:if test="${!empty disciplines}">
     <input class="button multi-button" type="button" value="Модифицировать выбранную дисциплину..." onclick="editDiscipline()">
     <input class="button multi-button" type="button" value="Удалить выбранную дисциплину" onclick="deleteDiscipline()">
+      </c:if>
     </div>
     </sec:authorize>
   </form:form>
