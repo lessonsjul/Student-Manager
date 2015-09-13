@@ -22,7 +22,7 @@ public class DisciplineRepository {
         this.sessionFactory.getCurrentSession().save(discipline);
     }
 
-    public List<Discipline> disciplineList(){
+    public List<Discipline> getDisciplineList(){
         return this.sessionFactory.getCurrentSession().createQuery("from Discipline ")
                 .list();
     }

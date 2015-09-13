@@ -31,7 +31,7 @@ public class DisciplineController {
 
     @RequestMapping(value = "/disciplines", method = RequestMethod.GET)
     public String getDisciplines(Model model){
-        Set<Discipline> disciplineList = new HashSet<Discipline>(this.disciplineRepository.disciplineList());
+        Set<Discipline> disciplineList = new HashSet<Discipline>(this.disciplineRepository.getDisciplineList());
 
         model.addAttribute("disciplines", disciplineList);
         return "discipline";

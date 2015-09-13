@@ -49,7 +49,6 @@
     </div>
     <div class="choises">
       <form:form name="semesterForm" action="progress" method="get">
-      <%--<input type="text" name="idStud" value="${student.id}">--%>
         <input type="hidden" name="idStud" value="${student.id}">
         <label>Выбрать семестр</label>
         <select name="idSem">
@@ -67,6 +66,8 @@
       <h5>Средняя оценка за семестр: ${avaragePoint} балла</h5>
     </div>
   </c:if>
+      <sec:authorize access="hasRole('admin')">
+      <a class="button-progress" href="/addProgress">Добавить успеваемость</a>
+      </sec:authorize>
   </div>
-    <a href="/addProgress">addProgress</a>
 </t:template>

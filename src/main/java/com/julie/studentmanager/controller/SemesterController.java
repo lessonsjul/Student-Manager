@@ -20,9 +20,9 @@ import java.util.Set;
 
 @Controller
 public class SemesterController {
-    
+
+    private final SemesterValidator semesterValidator;
     private SemesterRepository semesterRepository;
-    private SemesterValidator semesterValidator;
 
 
     @Autowired

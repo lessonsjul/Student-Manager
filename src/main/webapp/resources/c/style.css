@@ -76,6 +76,10 @@ table th{
     background: #a6a6a6;
 }
 
+.addProgress td{
+    border: none;
+}
+
 .discipline,.choises {
     width: 380px;
     padding: 5px;
@@ -146,6 +150,19 @@ label + select{
 
 .error{
     color: red;
+}
+
+.button-progress{
+    display: block;
+    padding: 5px;
+    border: 1px solid darkgray;
+    text-decoration: none;
+    position: relative;
+    width: 30%;
+    float: none;
+    clear: both;
+    text-align: center;
+    margin-top: 20px;
 }
 
 

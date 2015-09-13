@@ -19,20 +19,20 @@ public class Student{
     }
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     @GeneratedValue
     private Integer id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "second_name")
+    @Column(name = "second_name", nullable = false)
     private String secondName;
 
-    @Column(name = "groupe")
+    @Column(name = "groupe", nullable = false)
     private String group;
 
-    @Column(name = "entrance_date")
+    @Column(name = "entrance_date", nullable = false)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date entranceDate;
 

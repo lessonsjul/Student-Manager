@@ -12,7 +12,7 @@ public class Semester{
     }
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     @GeneratedValue
     public Integer getId() {
         return id;
@@ -23,7 +23,7 @@ public class Semester{
     private Integer id;
 
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
     public String getName() {
         return name;
@@ -32,7 +32,7 @@ public class Semester{
         this.name = name;
     }
 
-    @Column(name = "duration")
+    @Column(name = "duration", nullable = false)
     private Integer duration;
     public Integer getDuration() {
         return duration;
@@ -43,8 +43,8 @@ public class Semester{
 
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH})
     @JoinTable(name = "disciplines_has_semester",
-            joinColumns = @JoinColumn(name = "semester_id"),
-            inverseJoinColumns = @JoinColumn(name = "disciplines_id"))
+            joinColumns = @JoinColumn(name = "semester_id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "disciplines_id", nullable = false))
     @IndexColumn(name = "idx")
     public List<Discipline> getDisciplineList() {
         return disciplineList;

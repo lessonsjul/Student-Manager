@@ -15,7 +15,7 @@ public class Discipline{
 
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     @GeneratedValue
     public Integer getId() {
         return id;
@@ -28,7 +28,7 @@ public class Discipline{
 
 
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     public String getName() {
         return name;
     }

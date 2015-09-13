@@ -7,6 +7,8 @@ import javax.persistence.*;
 public class Progress{
 
     @Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue
     public Integer getId() {
         return id;
     }
@@ -15,7 +17,8 @@ public class Progress{
     }
     private Integer id;
 
-    @Column(name = "value")
+
+    @Column(name = "value", nullable = false)
     public int getValue() {
         return value;
     }
@@ -25,7 +28,7 @@ public class Progress{
     private int value;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "students_id", referencedColumnName = "id")
+    @JoinColumn(name = "students_id", referencedColumnName = "id", nullable = false)
     public Student getStudent() {
         return student;
     }
@@ -36,7 +39,7 @@ public class Progress{
     private Student student;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH})
-    @JoinColumn(name = "disciplines_id", referencedColumnName = "id")
+    @JoinColumn(name = "disciplines_id", referencedColumnName = "id", nullable = false)
     public Discipline getDiscipline(){
         return discipline;
     }

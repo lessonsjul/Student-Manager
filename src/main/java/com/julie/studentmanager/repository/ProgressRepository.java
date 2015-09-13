@@ -1,6 +1,7 @@
 package com.julie.studentmanager.repository;
 
 
+import com.julie.studentmanager.domain.Progress;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,9 @@ public class ProgressRepository {
         return Double.parseDouble(String.valueOf(s));
         }
 
+    public void setProgress(Progress progress){
 
+            this.sessionFactory.getCurrentSession().saveOrUpdate(progress);
+
+    }
 }

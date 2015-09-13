@@ -4,17 +4,23 @@ import com.julie.studentmanager.domain.Discipline;
 import com.julie.studentmanager.domain.Progress;
 import com.julie.studentmanager.domain.Semester;
 import com.julie.studentmanager.domain.Student;
+import com.julie.studentmanager.repository.DisciplineRepository;
 import com.julie.studentmanager.repository.ProgressRepository;
 import com.julie.studentmanager.repository.SemesterRepository;
 import com.julie.studentmanager.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ProgressController {
@@ -22,24 +28,30 @@ public class ProgressController {
     private ProgressRepository progressRepository;
     private SemesterRepository semesterRepository;
     private StudentRepository studentRepository;
+    private DisciplineRepository disciplineRepository;
     private static int STUDENTID;
     private static int SEMESTERID;
 
     @Autowired
     public ProgressController(ProgressRepository progressRepository,
-                              SemesterRepository semesterRepository, StudentRepository studentRepository) {
+                              SemesterRepository semesterRepository,
+                              StudentRepository studentRepository,
+                              DisciplineRepository disciplineRepository) {
         this.progressRepository = progressRepository;
         this.semesterRepository = semesterRepository;
         this.studentRepository = studentRepository;
+        this.disciplineRepository = disciplineRepository;
     }
 
     @RequestMapping(value = "/progress", method = RequestMethod.GET)
-    public String  progressList(@RequestParam(value = "idStud", required = false)Integer idStud) {
+    public String  progressList(@RequestParam(value = "idStud", required = false)Integer idStud,
+                                @RequestParam(value = "idSem", required = false)Integer idSem) {
         SEMESTERID = this.semesterRepository.getSemesterList().get(0).getId();
         if(null == idStud){
-            idStud = SEMESTERID;
+            idStud = STUDENTID;
         }
-        return "redirect: progressList?idSem="+SEMESTERID+"&idStud="+idStud;
+        if(null == idSem) idSem = SEMESTERID;
+        return "redirect: progressList?idSem="+idSem+"&idStud="+idStud;
     }
 
     @RequestMapping(value = "/progressList")
@@ -74,17 +86,22 @@ public class ProgressController {
     }
 
     @RequestMapping(value = "/addProgress", method = RequestMethod.GET)
-//    @PreAuthorize("hasRose('admin')")
+    @PreAuthorize("hasRose('admin')")
     public String addProgress(Model model){
-        List<Student> allStudents = this.studentRepository.getStudentList();
+        List<Student> studentsList = this.studentRepository.getStudentList();
+        List<Discipline> disciplineList = this.disciplineRepository.getDisciplineList();
 
-        Map<String, Integer> studentsList = new LinkedHashMap<String, Integer>();
-        for(Student elem: allStudents){
-            String fullName = elem.getSecondName() + " " + elem.getFirstName();
-            studentsList.put(fullName, elem.getId());
-        }
             model.addAttribute("progress", new Progress());
             model.addAttribute("studentList", studentsList);
+            model.addAttribute("disciplineList", disciplineList);
         return "addProgress";
+    }
+
+    @RequestMapping(value = "/setProgress", method = RequestMethod.POST)
+    public String setProgress(@ModelAttribute("progress")Progress progress ){
+        this.progressRepository.setProgress(progress);
+
+        int idStud = progress.getStudent().getId();
+        return "redirect: progress?idStud="+idStud;
     }
 }
