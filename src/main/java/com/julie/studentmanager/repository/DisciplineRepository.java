@@ -27,11 +27,6 @@ public class DisciplineRepository {
                 .list();
     }
 
-/* public List<Discipline> disciplineBySemester(Integer idSem){
-        return this.sessionFactory.getCurrentSession().createQuery("from Discipline d join d.semester s where s.id=" + idSem).list();
-    }*/
-
-
     public Discipline getDisciplineById(Integer id){
         return (Discipline) this.sessionFactory.getCurrentSession().createCriteria(Discipline.class)
                 .add(Restrictions.idEq(id)).uniqueResult();
@@ -67,9 +62,7 @@ public class DisciplineRepository {
                        .createQuery("from Discipline d where d.semester.id=" + elem.getId()).list();
                elem.setDisciplineList(disciplineList);
                this.sessionFactory.getCurrentSession().update(elem);
-
            }
     }
-
 
 }

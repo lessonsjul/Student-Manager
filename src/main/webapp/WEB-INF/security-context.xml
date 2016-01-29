@@ -2,23 +2,22 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:security="http://www.springframework.org/schema/security"
-       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/security
-       http://www.springframework.org/schema/security/spring-security.xsd
-        http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+       http://www.springframework.org/schema/security/spring-security.xsd">
 
        <security:global-method-security jsr250-annotations="enabled" pre-post-annotations="enabled" secured-annotations="enabled"/>
 
        <security:http use-expressions="true">
               <security:intercept-url pattern="/" access="permitAll"/>
               <security:form-login />
+              <!--<security:form-login login-page="/loginPage.jsp" default-target-url="/" authentication-failure-url="/login?error=true"/>-->
               <security:logout logout-success-url="/" delete-cookies="JSESSIONID"/>
-              <security:remember-me/>
-              <security:session-management invalid-session-url="/">
-                     <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true"/>
-              </security:session-management>
+              <security:remember-me />
+              <!--<security:session-management invalid-session-url="/">-->
+                     <!--&lt;!&ndash;<security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true"/>&ndash;&gt;-->
+              <!--</security:session-management>-->
        </security:http>
 
        <bean id="encoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder"/>

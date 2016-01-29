@@ -12,7 +12,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 @Transactional
@@ -92,5 +94,22 @@ public class SemesterRepository {
         }
     }
 
+    public static String selectWordNedeli(int duration){
+        if(duration >= 5 && duration <= 20) return "недель";
+        else if(duration == 1 || duration % 10 == 1) return "неделя";
+        else if(duration % 10 >= 2 && duration % 10 <= 4) return "недели";
+        else return "недель";
+    }
 
+
+    public Set<String> getSelectedDisciplineName(int semesterId){
+        List<Discipline> disciplineListBySemId = getDisciplineListBySemId(semesterId);
+        Set<String> selected = new HashSet<>();
+
+        for(Discipline elem: disciplineListBySemId){
+            selected.add(elem.getName());
+        }
+
+        return selected;
+    }
 }

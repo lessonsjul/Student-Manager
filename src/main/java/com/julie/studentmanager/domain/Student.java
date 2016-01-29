@@ -1,7 +1,5 @@
 package com.julie.studentmanager.domain;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -33,7 +31,6 @@ public class Student{
     private String group;
 
     @Column(name = "entrance_date", nullable = false)
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date entranceDate;
 
     public Integer getId() {
